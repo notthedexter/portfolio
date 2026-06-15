@@ -559,6 +559,53 @@ section {
     pointer-events: none;
 }
 
+.project-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.project-toggle {
+    font-size: 0.92rem;
+    color: var(--text-soft);
+    opacity: 0.75;
+    display: none;
+}
+
+.project-details {
+    transition: max-height 0.32s ease, opacity 0.32s ease;
+    overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    .project-card {
+        cursor: pointer;
+        min-height: auto;
+    }
+
+    .project-toggle {
+        display: inline-block;
+    }
+
+    .project-card .project-details {
+        max-height: 0;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .project-card.expanded .project-details {
+        max-height: 1000px;
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .project-card.expanded {
+        padding-bottom: 1.6rem !important;
+    }
+}
+
+
 .project-link i {
     font-size: 0.9rem;
     opacity: 0.8;

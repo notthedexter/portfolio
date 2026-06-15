@@ -198,6 +198,17 @@ window.addEventListener('scroll', highlightNav);
 window.addEventListener('resize', highlightNav); // Recalculate on resize
 highlightNav();
 
+const initProjectCardToggle = () => {
+    document.querySelectorAll('.project-card').forEach(card => {
+        card.addEventListener('click', event => {
+            if (event.target.closest('a')) return;
+            card.classList.toggle('expanded');
+        });
+    });
+};
+
+initProjectCardToggle();
+
 // Draggable Lens Logic
 const initDraggableLens = () => {
     const navLinksContainer = document.querySelector('.nav-links');
