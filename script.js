@@ -184,11 +184,15 @@ const highlightNav = () => {
         const containerRect = navLinksContainer.getBoundingClientRect();
         
         const left = linkRect.left - containerRect.left;
+        const top = linkRect.top - containerRect.top;
         const width = linkRect.width;
+        const height = linkRect.height;
         
         navLens.style.opacity = '1';
         navLens.style.left = `${left}px`;
+        navLens.style.top = `${top}px`;
         navLens.style.width = `${width}px`;
+        navLens.style.height = `${height}px`;
     } else {
         navLens.style.opacity = '0';
     }
