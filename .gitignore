@@ -15,4 +15,7 @@ yarn-error.log*
 # VS Code
 .vscode/
 
+# MiMoCode
+.mimocode/
+
 tre.md

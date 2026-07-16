@@ -2,6 +2,21 @@ const sgMail = require("@sendgrid/mail");
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+function parseBody(req) {
+  return new Promise((resolve, reject) => {
+    let body = "";
+    req.on("data", (chunk) => (body += chunk));
+    req.on("end", () => {
+      try {
+        resolve(JSON.parse(body));
+      } catch {
+        reject(new Error("Invalid JSON"));
+      }
+    });
+    req.on("error", reject);
+  });
+}
+
 module.exports = async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -15,7 +30,14 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { name, email, message } = req.body || {};
+  let data;
+  try {
+    data = await parseBody(req);
+  } catch {
+    return res.status(400).json({ error: "Invalid request body" });
+  }
+
+  const { name, email, message } = data || {};
 
   if (!name || !email || !message) {
     return res.status(400).json({ error: "All fields are required" });
@@ -24,7 +46,7 @@ module.exports = async (req, res) => {
   try {
     await sgMail.send({
       to: "m.h.shishir@outlook.com",
-      from: "portfolio@vercel.app",
+      from: "m.h.shishir@outlook.com",
       replyTo: email,
       subject: `Portfolio Contact — ${name}`,
       text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
