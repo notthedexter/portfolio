@@ -333,10 +333,36 @@ const initDraggableLens = () => {
 initDraggableLens();
 
 const contactForm = document.getElementById('contactForm');
-contactForm?.addEventListener('submit', event => {
+contactForm?.addEventListener('submit', async event => {
     event.preventDefault();
-    alert('Thank you for reaching out! I will respond shortly.');
-    contactForm.reset();
+    const btn = contactForm.querySelector('button[type="submit"]');
+    const originalText = btn.textContent;
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+
+    const formData = {
+        name: contactForm.querySelector('input[type="text"]').value,
+        email: contactForm.querySelector('input[type="email"]').value,
+        message: contactForm.querySelector('textarea').value,
+    };
+
+    try {
+        const res = await fetch('/api/send', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData),
+        });
+
+        if (!res.ok) throw new Error('Failed');
+
+        alert('Thank you for reaching out! I will respond shortly.');
+        contactForm.reset();
+    } catch (err) {
+        alert('Something went wrong. Please try again or email me directly.');
+    } finally {
+        btn.textContent = originalText;
+        btn.disabled = false;
+    }
 });
 
 console.log('%cPortfolio refreshed', 'font-size: 14px; color: #8ce0ff; font-weight: 600;');

@@ -1,0 +1,7 @@
+{
+  "name": "portfolio",
+  "private": true,
+  "dependencies": {
+    "@sendgrid/mail": "^8.1.0"
+  }
+}
